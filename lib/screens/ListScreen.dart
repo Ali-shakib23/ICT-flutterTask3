@@ -1,11 +1,13 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' ;
 import 'package:http/http.dart' as http ;
 import 'package:task3/screens/prodctScreen.dart';
 
 import '../data/models/product.dart';
+import 'loginScreen.dart';
 
 class ListScreen extends StatefulWidget {
   ListScreen({super.key});
@@ -50,8 +52,28 @@ class _ListScreenState extends State<ListScreen>{
     bool isloading= true;
     @override
     Widget build(BuildContext context) {
-      return Directionality(textDirection: TextDirection.ltr,
-        child: Scaffold(
+      return Scaffold(
+          appBar:AppBar(
+            backgroundColor: const Color(0xFF252837),
+            title: const Text('Croma'),
+            leading: InkWell(
+                onTap: ()async {
+              await FirebaseAuth.instance.signOut().whenComplete(() {
+              Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+              builder: (context) => const LoginScreen(),
+              ),
+              );
+
+              });
+      },
+                child: const Icon(
+                  color: Colors.white,
+                  Icons.logout,
+                )
+              ),
+          ),
           backgroundColor: const Color(0xFFF6F7F8),
           body: isloading?
               const Center(
@@ -129,8 +151,8 @@ class _ListScreenState extends State<ListScreen>{
                 ),
           )
 
-        ),
-      );
+        );
+
     }
   }
 
